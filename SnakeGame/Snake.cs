@@ -7,11 +7,11 @@ namespace SnakeGame
 {
     class Snake
     {
-        private Point[] snake;
+        private List<Point> snake;
         private Point direction;
         //UP(0,-1) DOWN(0,1) RIGHT(1,0) LEFT(-1,0)
 
-        public Snake(Point[] initial_body, Point initial_direction)
+        public Snake(List<Point> initial_body, Point initial_direction)
         {
             this.snake = initial_body;
             this.direction = initial_direction;
@@ -19,12 +19,11 @@ namespace SnakeGame
 
         public void take_step(Point position)
         {
-            for(int i = 0; i < snake.Length -1; i++)
+            for(int i = 0; i < snake.Count -1; i++)
             {
                 snake[i] = snake[i+1];
             }
-            snake[snake.Length - 1].X += position.X;
-            snake[snake.Length - 1].Y += position.Y;
+            snake[snake.Count - 1] = new Point(snake[snake.Count - 1].X + position.X, snake[snake.Count - 1].Y + position.Y);
         }
 
         public void set_direction(Point direction)
@@ -34,18 +33,18 @@ namespace SnakeGame
 
         public Point getHead()
         {
-            int headPosition = snake.Length - 1;
+            int headPosition = snake.Count - 1;
             return snake[headPosition];
         }
 
-        public Point[] getBody()
+        public List<Point> getBody()
         {
             return snake;
         }
 
         public int getLength()
         {
-            return snake.Length;
+            return snake.Count;
         }
 
         public override string ToString()
@@ -57,6 +56,12 @@ namespace SnakeGame
             }
             output += "]";
             return output;
+        }
+
+        public void increaseSize()
+        {
+            Point tail_of_snake = snake[0];
+            snake.Insert(0, new Point(tail_of_snake.X -1, tail_of_snake.Y -1));
         }
     }
 }

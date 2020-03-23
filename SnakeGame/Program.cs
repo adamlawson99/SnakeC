@@ -16,13 +16,10 @@ namespace SnakeGame
         Game myGame = new Game(10, 20);
             myGame.render();
             Console.WriteLine(myGame.getSnake().ToString());
-            while (true)
+            while (!myGame.check_collision())
             {
                 //read the direction key and then wait for enter
-                ConsoleKeyInfo direc_key = Console.ReadKey();
-                ConsoleKeyInfo key = Console.ReadKey();
-                if(key.Key == ConsoleKey.Enter)
-                {
+                ConsoleKeyInfo direc_key = Console.ReadKey(true);
                     if(direc_key.Key == ConsoleKey.W)
                     {
                         myGame.getSnake().take_step(UP);
@@ -43,7 +40,6 @@ namespace SnakeGame
                         myGame.getSnake().take_step(RIGHT);
                         myGame.render();
                     }
-                }
                 Console.WriteLine(myGame.getSnake().ToString());
             }
         }

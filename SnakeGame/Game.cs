@@ -10,14 +10,15 @@ namespace SnakeGame
         private int height;
         private int width;
         private Snake snake;
-        private Point[] snake_body;
+        private List<Point> snake_body;
         private Point direction;
-
+        private Apple apple;
+        private Random rnd;
         public Game(int height, int width)
         {
             this.height = height;
             this.width = width;
-            this.snake_body = new Point[] { 
+            this.snake_body = new List<Point>() { 
                 new Point {X = 0, Y = 0 },
                 new Point {X = 1, Y = 0 },
                 new Point {X = 2, Y = 0 },
@@ -26,6 +27,8 @@ namespace SnakeGame
             };
             this.direction = new Point { X = 0, Y = -1 };
             this.snake = new Snake(snake_body, direction);
+            rnd = new Random();
+            this.apple = new Apple(new Point(5,5));
         }
 
         public string[,] board_matrix(int height, int width)
@@ -61,10 +64,16 @@ namespace SnakeGame
 
         }
 
+        public void setApple(string[,] gameBoard)
+        {
+            gameBoard[apple.getPosition().X, apple.getPosition().Y] = "Y";
+        }
+
         public void render()
         {
-            string[,] gameBoard = board_matrix(15, 30);
-
+            string[,] gameBoard = board_matrix(height, width);
+            updateState();
+            setApple(gameBoard);
             renderSnake(gameBoard);
 
             ///Render the game board on screen
@@ -77,6 +86,12 @@ namespace SnakeGame
                 }
                 Console.Write("\n");
             }
+
+        }
+
+        private void updateState()
+        {
+            hasEaten(apple);
         }
 
         public void renderSnake(string[,] gameBoard)
@@ -99,6 +114,42 @@ namespace SnakeGame
         public bool inBounds()
         {
             return true;
+        }
+
+        //each time the player moves we must see if they collided with any of the edges of the game board
+        //or if they collided with themselves
+        //if they collide the game terminates
+        public bool check_collision()
+        {
+            //check for width
+            if (snake.getHead().X == -1 || snake.getHead().X == height-2)
+            {
+                return true;
+            }
+            else if (snake.getHead().Y == -1 || snake.getHead().Y == width-2)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void spawnApple()
+        {
+            apple.setPosition(rnd.Next(1, height - 2), rnd.Next(1, width - 2));
+        }
+
+        public bool hasEaten(Apple p)
+        {
+            
+            if(snake.getHead().X == p.getPosition().X -1 && snake.getHead().Y == p.getPosition().Y -1)
+            {
+                //remove the apple, spawn a new one and increas the size of the snake
+                snake.increaseSize();
+                spawnApple();
+                return true;
+
+            }
+            return false;
         }
     }
 }
