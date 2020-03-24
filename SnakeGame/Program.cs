@@ -8,10 +8,10 @@ namespace SnakeGame
 
         static void Main(string[] args)
         {
-          Point LEFT = new Point { X = 0, Y = -1 };
-          Point RIGHT = new Point { X = 0, Y = 1 };
-          Point DOWN = new Point { X = 1, Y = 0 };
-          Point UP = new Point { X = -1, Y = 0 };
+          Point LEFT = new Point { X = -1, Y = 0 };
+          Point RIGHT = new Point { X = 1, Y = 0 };
+          Point DOWN = new Point { X = 0, Y =  1};
+          Point UP = new Point { X = 0, Y = -1 };
 
         Game myGame = new Game(10, 20);
             myGame.render();

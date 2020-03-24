@@ -7,6 +7,7 @@ namespace SnakeGame
 {
     class Game
     {
+        //height = Y width = X
         private int height;
         private int width;
         private Snake snake;
@@ -18,15 +19,7 @@ namespace SnakeGame
         {
             this.height = height;
             this.width = width;
-            this.snake_body = new List<Point>() { 
-                new Point {X = 0, Y = 0 },
-                new Point {X = 1, Y = 0 },
-                new Point {X = 2, Y = 0 },
-                new Point {X = 2, Y = 1 },
-                new Point {X = 3, Y = 1 },
-            };
-            this.direction = new Point { X = 0, Y = -1 };
-            this.snake = new Snake(snake_body, direction);
+            this.snake = new Snake(5, Directions.Up,height,width);
             rnd = new Random();
             this.apple = new Apple(new Point(5,5));
         }
@@ -34,11 +27,13 @@ namespace SnakeGame
         public string[,] board_matrix(int height, int width)
         {
             string[,] gameBoard = new string[height,width];
-            for (int x = 0; x < gameBoard.GetLength(0); x++)
+            //board rows
+            for (int y = 0; y < gameBoard.GetLength(0); y++)
             {
-                for (int y = 0; y < gameBoard.GetLength(1); y++)
+                //board columns
+                for (int x = 0; x < gameBoard.GetLength(1); x++)
                 {
-                    gameBoard[x, y] = " ";
+                    gameBoard[y, x] = " ";
                 }
             }
 
@@ -50,15 +45,15 @@ namespace SnakeGame
 
 
             //set edges of gameboard
-            for (int x = 1; x < gameBoard.GetLength(0)-1; x++)
+            for (int y = 1; y < gameBoard.GetLength(0)-1; y++)
             {
-                gameBoard[x, 0] = "|";
-                gameBoard[x, width-1] = "|";
+                gameBoard[y, 0] = "|";
+                gameBoard[y, width-1] = "|";
             }
-            for (int y = 1; y < gameBoard.GetLength(1)-1; y++)
+            for (int x = 1; x < gameBoard.GetLength(1)-1; x++)
             {
-                gameBoard[0, y] = "-";
-                gameBoard[height -1, y] = "-";
+                gameBoard[0, x] = "-";
+                gameBoard[height -1, x] = "-";
             }
             return gameBoard;
 
@@ -66,7 +61,7 @@ namespace SnakeGame
 
         public void setApple(string[,] gameBoard)
         {
-            gameBoard[apple.getPosition().X, apple.getPosition().Y] = "Y";
+            gameBoard[apple.getPosition().Y, apple.getPosition().X] = "Y";
         }
 
         public void render()
@@ -78,11 +73,11 @@ namespace SnakeGame
 
             ///Render the game board on screen
             
-            for(int x=0; x < gameBoard.GetLength(0); x++)
+            for(int y=0; y < gameBoard.GetLength(0); y++)
             {
-                for(int y=0; y < gameBoard.GetLength(1); y++)
+                for(int x=0; x < gameBoard.GetLength(1); x++)
                 {
-                    Console.Write(gameBoard[x, y]);
+                    Console.Write(gameBoard[y, x]);
                 }
                 Console.Write("\n");
             }
@@ -99,13 +94,13 @@ namespace SnakeGame
             //Add the snake body to the game board
             for (int sx = 0; sx < snake.getLength() - 1; sx++)
             {
-                gameBoard[snake.getBody()[sx].X +1 , snake.getBody()[sx].Y +1] = "X";
+                gameBoard[snake.getBody()[sx].Y +1 , snake.getBody()[sx].X +1] = "X";
             }
 
             //Make the snake head an "O"
-            gameBoard[snake.getHead().X + 1, snake.getHead().Y + 1] = "0";
+            gameBoard[snake.getHead().Y + 1, snake.getHead().X + 1] = "0";
         }
-
+        
         public Snake getSnake()
         {
             return snake;
@@ -122,11 +117,11 @@ namespace SnakeGame
         public bool check_collision()
         {
             //check for width
-            if (snake.getHead().X == -1 || snake.getHead().X == height-2)
+            if (snake.getHead().Y == -1 || snake.getHead().Y == height-2)
             {
                 return true;
             }
-            else if (snake.getHead().Y == -1 || snake.getHead().Y == width-2)
+            else if (snake.getHead().X == -1 || snake.getHead().X == width-2)
             {
                 return true;
             }
@@ -135,7 +130,7 @@ namespace SnakeGame
 
         public void spawnApple()
         {
-            apple.setPosition(rnd.Next(1, height - 2), rnd.Next(1, width - 2));
+            apple.setPosition(rnd.Next(1, width - 2), rnd.Next(1, height - 2));
         }
 
         public bool hasEaten(Apple p)
