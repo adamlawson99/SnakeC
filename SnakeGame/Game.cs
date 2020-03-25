@@ -116,14 +116,24 @@ namespace SnakeGame
         //if they collide the game terminates
         public bool check_collision()
         {
-            //check for width
-            if (snake.getHead().Y == -1 || snake.getHead().Y == height-2)
+            List<Point> snakeBody = snake.getBody();
+            Point snakeHead = snake.getHead();
+            //check for collisions with game board
+            if (snakeHead.Y == -1 || snakeHead.Y == height-2)
             {
                 return true;
             }
-            else if (snake.getHead().X == -1 || snake.getHead().X == width-2)
+            else if (snakeHead.X == -1 || snakeHead.X == width-2)
             {
                 return true;
+            }
+            //check for collisions with body
+            for(int i =0; i < snakeBody.Count -1; i++)
+            {
+                if(snakeHead.X == snakeBody[i].X && snakeHead.Y == snakeBody[i].Y)
+                {
+                    return true;
+                }
             }
             return false;
         }

@@ -15,17 +15,10 @@ namespace SnakeGame
         {
             //code to genrate a snake body
             this.snake = new List<Point>();
-            //{
-            //    new Point {X = 0, Y = 0 },
-            //    new Point {X = 1, Y = 0 },
-            //    new Point {X = 2, Y = 0 },
-            //    new Point {X = 2, Y = 1 },
-            //    new Point {X = 3, Y = 1 },
-            //};
             this.direction = initial_direction;
             if (direction == Directions.Up || direction == Directions.Down)
             {
-                for(int i = 2; i <= length -2; i++)
+                for(int i = length-1; i > 1 ; i--)
                 {
                     snake.Add(new Point { Y = i, X = 2 });
                 }
@@ -45,13 +38,43 @@ namespace SnakeGame
             }
         }
 
-        public void take_step(Point position)
+        public void take_step(Directions direction)
         {
-            for(int i = 0; i < snake.Count -1; i++)
+            bool canMove = isStepValid(direction);
+            if (!canMove)
             {
-                snake[i] = snake[i+1];
+                return;
             }
-            snake[snake.Count - 1] = (new Point { Y = snake[snake.Count - 1].Y + position.Y, X = snake[snake.Count - 1].X + position.X });
+            else
+            {
+                this.direction = direction;
+                Point newBodySegment = new Point();
+                switch (direction)
+                {
+                    case (Directions.Up):
+                        newBodySegment = new Point { X = 0, Y = -1 };
+                        break;
+                    case (Directions.Down):
+                        newBodySegment = new Point { X = 0, Y = 1 };
+                        break;
+                    case (Directions.Left):
+                        newBodySegment = new Point { X = -1, Y = 0 };
+                        break;
+                    case (Directions.Right):
+                        newBodySegment = new Point { X = 1, Y = 0 };
+                        break;
+                }
+
+
+
+                
+                for (int i = 0; i < snake.Count - 1; i++)
+                {
+                    snake[i] = snake[i + 1];
+                }
+                snake[snake.Count - 1] = (new Point { Y = snake[snake.Count - 1].Y + newBodySegment.Y, X = snake[snake.Count - 1].X + newBodySegment.X });
+
+            }
         }
 
         public void set_direction(Directions direction)
@@ -90,6 +113,61 @@ namespace SnakeGame
         {
             Point tail_of_snake = snake[0];
             snake.Insert(0, new Point(tail_of_snake.X -1, tail_of_snake.Y -1));
+        }
+
+        public bool isStepValid(Directions direction)
+        {
+            switch (direction)
+            {
+                case Directions.Down:
+                    if(this.direction == Directions.Up)
+                    {
+                        return false;
+                    }
+                    return true;
+                case Directions.Up:
+                    if(this.direction == Directions.Down)
+                    {
+                        return false;
+                    }
+                    return true;
+                case Directions.Left:
+                    if(this.direction == Directions.Right)
+                    {
+                        return false;
+                    }
+                    return true;
+                case Directions.Right:
+                    if(this.direction == Directions.Left)
+                    {
+                        return false;
+                    }
+                    return true;
+                default:
+                    return false;
+            }
+            //if(this.direction == Directions.Down || this.direction == Directions.Up)
+            //{
+            //    if(this.direction == Directions.Up && direction == Directions.Down)
+            //    {
+            //        return false;
+            //    }
+            //    if (this.direction == Directions.Down && direction == Directions.Up)
+            //    {
+            //        return false;
+            //    }
+
+            //    return true;
+            //}
+            //else if(this.direction == Directions.Right || this.direction == Directions.Left)
+            //{
+                
+            //    return
+            //}
+            //else
+            //{
+            //    return false;
+            //}
         }
     }
 }

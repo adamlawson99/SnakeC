@@ -8,10 +8,7 @@ namespace SnakeGame
 
         static void Main(string[] args)
         {
-          Point LEFT = new Point { X = -1, Y = 0 };
-          Point RIGHT = new Point { X = 1, Y = 0 };
-          Point DOWN = new Point { X = 0, Y =  1};
-          Point UP = new Point { X = 0, Y = -1 };
+
 
         Game myGame = new Game(10, 20);
             myGame.render();
@@ -22,22 +19,22 @@ namespace SnakeGame
                 ConsoleKeyInfo direc_key = Console.ReadKey(true);
                     if(direc_key.Key == ConsoleKey.W)
                     {
-                        myGame.getSnake().take_step(UP);
+                        myGame.getSnake().take_step(Directions.Up);
                         myGame.render();
                     }
                     else if (direc_key.Key == ConsoleKey.A)
                     {
-                        myGame.getSnake().take_step(LEFT);
+                        myGame.getSnake().take_step(Directions.Left);
                         myGame.render();
                     }
                     else if (direc_key.Key == ConsoleKey.S)
                     {
-                        myGame.getSnake().take_step(DOWN);
+                        myGame.getSnake().take_step(Directions.Down);
                         myGame.render();
                     }
                     else if (direc_key.Key == ConsoleKey.D)
                     {
-                        myGame.getSnake().take_step(RIGHT);
+                        myGame.getSnake().take_step(Directions.Right);
                         myGame.render();
                     }
                 Console.WriteLine(myGame.getSnake().ToString());
