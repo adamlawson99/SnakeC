@@ -6,6 +6,7 @@ namespace SnakeGame
 {
     public enum Directions
     {
+        Undefined,
         Up,
         Down,
         Left,

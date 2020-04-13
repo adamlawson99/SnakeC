@@ -10,32 +10,31 @@ namespace SnakeGame
         {
 
 
-        Game myGame = new Game(10, 20);
-            myGame.render();
+        Game myGame = new Game();
+            myGame.Height = 10;
+            myGame.Width = 20;
+            myGame.Intialize();
+            //myGame.Run();
             Console.WriteLine(myGame.getSnake().ToString());
-            while (!myGame.check_collision())
+            while (myGame.Continue)
             {
                 //read the direction key and then wait for enter
                 ConsoleKeyInfo direc_key = Console.ReadKey(true);
                     if(direc_key.Key == ConsoleKey.W)
                     {
-                        myGame.getSnake().take_step(Directions.Up);
-                        myGame.render();
+                    myGame.Move(Directions.Up);
                     }
                     else if (direc_key.Key == ConsoleKey.A)
                     {
-                        myGame.getSnake().take_step(Directions.Left);
-                        myGame.render();
+                    myGame.Move(Directions.Left);
                     }
                     else if (direc_key.Key == ConsoleKey.S)
                     {
-                        myGame.getSnake().take_step(Directions.Down);
-                        myGame.render();
+                    myGame.Move(Directions.Down);
                     }
                     else if (direc_key.Key == ConsoleKey.D)
                     {
-                        myGame.getSnake().take_step(Directions.Right);
-                        myGame.render();
+                    myGame.Move(Directions.Right);
                     }
                 Console.WriteLine(myGame.getSnake().ToString());
             }
